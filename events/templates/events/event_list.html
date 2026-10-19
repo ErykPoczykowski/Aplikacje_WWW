@@ -1,0 +1,48 @@
+{% extends 'events/base.html' %}
+
+{% block title %}Aktualne Wydarzenia – EventHub{% endblock %}
+
+{% block content %}
+    <h2>Nadchodzące wydarzenia</h2>
+    <p>Przeglądaj najnowsze konferencje, warsztaty i spotkania branżowe:</p>
+
+    <!-- Pasek nawigacyjny kategorii -->
+    <div style="margin: 20px 0; padding: 10px; background-color: #e0f2fe; border-radius: 6px;">
+        <strong style="margin-right: 10px;">Filtruj po kategorii:</strong>
+
+        <!-- Link "Wszystkie" (prowadzi do event_list) -->
+        <a href="{% url 'events:event-list' %}"
+           style="margin-right: 15px; color: #0369a1; text-decoration: {% if not current_category %}underline; font-weight: bold;{% else %}none{% endif %};">
+            Wszystkie
+        </a>
+
+        <!-- Pętla po kategoriach (prowadzi do events_by_category) -->
+        {% for category in categories %}
+            <a href="{% url 'events:events-by-category' category.slug %}"
+               style="margin-right: 15px; color: #0369a1; text-decoration: {% if current_category == category %}underline; font-weight: bold;{% else %}none{% endif %};">
+                {{ category.name }}
+            </a>
+        {% endfor %}
+    </div>
+
+    <div style="margin: 20px 0; padding: 10px; background-color: #e0f2fe; border-radius: 6px;">
+        <!-- ... (tutaj znajduje się kod z poprzedniego punktu) ... -->
+    </div>
+
+    <!-- Formularz wyszukiwania (Zadanie 3) -->
+    <form method="get" action="{% url 'events:event-list' %}" style="margin-bottom: 20px;">
+        <input type="text" name="q" placeholder="Szukaj po tytule..." value="{{ q }}"
+               style="padding: 8px; width: 300px; border: 1px solid #ccc; border-radius: 4px;">
+        <button type="submit" class="btn" style="padding: 8px 16px; border: none; cursor: pointer;">Szukaj</button>
+    </form>
+
+    {% if events %}
+        <div class="event-grid">
+            {% for event in events %}
+                {% include 'events/includes/event_card.html' %}
+            {% endfor %}
+        </div>
+    {% else %}
+        <p style="margin-top: 20px;">Brak opublikowanych wydarzeń w tej chwili.</p>
+    {% endif %}
+{% endblock %}

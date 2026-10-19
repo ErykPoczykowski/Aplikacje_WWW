@@ -1,0 +1,45 @@
+{% extends 'events/base.html' %}
+
+{% block title %}{{ event.title }} – EventHub{% endblock %}
+
+{% block content %}
+    <div class="detail-view">
+        <!-- Dotychczasowa zawartość widoku szczegółów -->
+        <a href="{% url 'events:event-list' %}" style="color: #0284c7; text-decoration: none;">&larr; Wróć do listy wydarzeń</a>
+        <h1 style="margin-top: 15px;">{{ event.title }}</h1>
+        <span class="badge">{{ event.category.name }}</span>
+
+        <div class="meta" style="margin: 20px 0; font-size: 1rem;">
+            <p><strong>Termin:</strong> {{ event.date|date:"l, d F Y, godz. H:i" }}</p>
+            <p><strong>Lokalizacja:</strong> {{ event.location }}</p>
+            <p><strong>Organizator:</strong> {{ event.organizer.get_full_name|default:event.organizer.username }}</p>
+            <p><strong>Dostępne miejsca:</strong> {{ event.capacity }} osób</p>
+            <p><strong>Koszt udziału:</strong> {% if event.price == 0 %}Bezpłatne{% else %}{{ event.price }} PLN{% endif %}</p>
+        </div>
+
+        <h3>Opis wydarzenia</h3>
+        <p style="white-space: pre-line; margin-top: 10px;">{{ event.description }}</p>
+    </div>
+
+    <!-- Sekcja Podobne wydarzenia (Zadanie 4) -->
+    <h3 style="margin-top: 40px;">Podobne wydarzenia z kategorii: {{ event.category.name }}</h3>
+    <div class="event-grid">
+        {% for rel_event in related_events %}
+            <div class="card">
+                <div>
+                    <span class="badge">{{ rel_event.category.name }}</span>
+                    <h2>{{ rel_event.title }}</h2>
+                    <p class="meta">
+                        📅 {{ rel_event.date|date:"d M Y, H:i" }}<br>
+                        📍 {{ rel_event.location }}<br>
+                    </p>
+                </div>
+                <div style="margin-top: 15px;">
+                    <a href="{% url 'events:event-detail' rel_event.slug %}" class="btn">Zobacz szczegóły</a>
+                </div>
+            </div>
+        {% empty %}
+            <p style="margin-top: 10px;">Brak podobnych wydarzeń w tej kategorii.</p>
+        {% endfor %}
+    </div>
+{% endblock %}
