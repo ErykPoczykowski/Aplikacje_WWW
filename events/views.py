@@ -49,4 +49,4 @@ def event_detail(request, slug):
     return render(request, 'events/event_detail.html', {
         'event': event,
         'related_events': related_events  # Przekazanie do szablonu
-    })turn render(request, 'events/event_detail.html', {'event': event})
+    })
