@@ -4,7 +4,6 @@
 
 {% block content %}
     <div class="detail-view">
-        <!-- Dotychczasowa zawartość widoku szczegółów -->
         <a href="{% url 'events:event-list' %}" style="color: #0284c7; text-decoration: none;">&larr; Wróć do listy wydarzeń</a>
         <h1 style="margin-top: 15px;">{{ event.title }}</h1>
         <span class="badge">{{ event.category.name }}</span>
@@ -21,7 +20,6 @@
         <p style="white-space: pre-line; margin-top: 10px;">{{ event.description }}</p>
     </div>
 
-    <!-- Sekcja Podobne wydarzenia (Zadanie 4) -->
     <h3 style="margin-top: 40px;">Podobne wydarzenia z kategorii: {{ event.category.name }}</h3>
     <div class="event-grid">
         {% for rel_event in related_events %}

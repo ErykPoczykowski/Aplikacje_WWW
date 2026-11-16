@@ -6,7 +6,6 @@ import django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'eventhub.settings')
 django.setup()
 
-# 2. Import modelu
 from events.models import Event
 
 

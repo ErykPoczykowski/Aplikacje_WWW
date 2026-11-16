@@ -7,7 +7,6 @@ def event_list(request):
     events = Event.objects.filter(is_published=True).select_related('category', 'organizer')
     categories = Category.objects.all()
 
-    # Obsługa wyszukiwarki (Zadanie 3)
     q = request.GET.get('q', '')
     if q:
         events = events.filter(title__icontains=q)
@@ -15,7 +14,7 @@ def event_list(request):
     return render(request, 'events/event_list.html', {
         'events': events,
         'categories': categories,
-        'q': q  # Przekazanie zapytania do szablonu
+        'q': q
     })
 
 
@@ -23,7 +22,7 @@ def events_by_category(request, category_slug):
     """Wydarzenia przefiltrowane według kategorii."""
     category = get_object_or_404(Category, slug=category_slug)
     events = category.events.filter(is_published=True).select_related('organizer')
-    categories = Category.objects.all()  # Pobranie wszystkich kategorii
+    categories = Category.objects.all()
 
     return render(request, 'events/event_list.html', {
         'events': events,
@@ -40,7 +39,6 @@ def event_detail(request, slug):
         is_published=True
     )
 
-    # Pobieranie podobnych wydarzeń (Zadanie 4)
     related_events = Event.objects.filter(
         category=event.category,
         is_published=True
@@ -48,5 +46,5 @@ def event_detail(request, slug):
 
     return render(request, 'events/event_detail.html', {
         'event': event,
-        'related_events': related_events  # Przekazanie do szablonu
+        'related_events': related_events
     })
